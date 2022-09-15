@@ -7,19 +7,21 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float speed = 2.0f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Boundary boundary;
+    public float verticalPosition;
 
     // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
-        float y = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;
+        Move();
+    }
 
-        transform.position = new Vector2(transform.position.x + x, transform.position.y + y);
+    public void Move()
+    {
+        float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
+
+        transform.position += new Vector3(x, 0.0f, 0.0f);
+        var clampedPosition = Mathf.Clamp(transform.position.x, boundary.min, boundary.max);
+        transform.position = new Vector2(clampedPosition, verticalPosition);
     }
 }
